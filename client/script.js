@@ -4,14 +4,19 @@ const socket = io()
 const chat = document.querySelector('#chat')
 const input = document.querySelector('#msg-input')
 const sendBtn = document.querySelector('#send-btn')
+const userInput = document.querySelector('#user-input')
+const userBtn = document.querySelector('#user-btn')
+const dialog = document.querySelector('dialog')
 
 let username = ''
 
-while (username.length < 2) {
-  username = prompt('Enter your username (at least 2 letters):')
-}
+userBtn.addEventListener('click', (ev) => {
+  ev.preventDefault()
+  username = userInput.value
 
-socket.emit('newuser', username)
+  socket.emit('newuser', username)
+  dialog.classList.add('closed')
+})
 
 socket.on('update', (message) => {
   appendUpdate(message)
@@ -36,11 +41,11 @@ function appendUpdate(message) {
 
 function appendMessage(message, user) {
   const htmlMessage = `<div class="message">
-  <div class= ${username === user ? 'mine' : 'others'}>
-      <span>${user}</span>
-      <h3>${message}</h3>  
-    </div>
-  </div>`
+    <div class=${username === user ? 'mine' : 'others'}>
+        <span>${user}</span>
+        <h3>${message}</h3>  
+      </div>
+    </div>`
 
   chat.innerHTML += htmlMessage
 }

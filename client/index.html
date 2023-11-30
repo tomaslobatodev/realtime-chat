@@ -11,7 +11,7 @@
       <h1>Real-time Chat Board!</h1>
       <section id="chat"></section>
       <form>
-        <input type="text" placeholder="Message" id='msg-input'/>
+        <input type="text" placeholder="Message" id='msg-input' autofocus/>
         <button id='send-btn'>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -31,8 +31,15 @@
         </button>
       </form>
     </main>
-
-    <script src="socket.io/socket.io.js"></script>
+    <dialog open>
+      <h1>Join the chat!</h1>
+      <form id='user-form'>
+        <label for="user-input">Enter your name</label>
+        <input type="text" id='user-input' autofocus>
+        <button id='user-btn'>confirm</button>
+      </form>
+    </dialog>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.js"></script>
     <script src="script.js" type='module'></script>
   </body>
 </html>
