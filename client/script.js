@@ -11,12 +11,14 @@ const dialog = document.querySelector('dialog')
 let username = ''
 
 userBtn.addEventListener('click', (ev) => {
-  ev.preventDefault()
-  username = userInput.value
+  ev.preventDefault();
 
-  socket.emit('newuser', username)
-  dialog.classList.add('closed')
-})
+  if (document.getElementById('user-form').checkValidity()) {
+    username = userInput.value;
+    socket.emit('newuser', username);
+    dialog.classList.add('closed');
+  }
+});
 
 socket.on('update', (message) => {
   appendUpdate(message)
@@ -29,7 +31,10 @@ socket.on('message', ({ msg, user }) => {
 
 sendBtn.addEventListener('click', (ev) => {
   ev.preventDefault()
-  socket.emit('message', { msg: input.value, user: username })
+
+  if (document.getElementById('msg-form').checkValidity()) {
+    socket.emit('message', { msg: input.value, user: username })
+  }
 })
 
 function appendUpdate(message) {
@@ -37,6 +42,7 @@ function appendUpdate(message) {
   messageElement.classList.add('update')
   messageElement.innerText = message
   chat.appendChild(messageElement)
+  scrollToBottom()
 }
 
 function appendMessage(message, user) {
@@ -48,4 +54,9 @@ function appendMessage(message, user) {
     </div>`
 
   chat.innerHTML += htmlMessage
+  scrollToBottom()
+}
+
+function scrollToBottom() {
+  chat.scrollTop = chat.scrollHeight;
 }
